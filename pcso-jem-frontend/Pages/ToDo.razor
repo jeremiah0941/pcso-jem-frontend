@@ -2,6 +2,7 @@
 @inject IJSRuntime JS
 @using System.Text.Json;
 @using System.Text.Json.Serialization;
+@using System.Net.Http.Headers
 
 <h1>Welcome ToDo Page</h1>
 <!--h3>@jsonData</h3-->
@@ -33,7 +34,10 @@ else
         </tbody>
     </table>
 }
-
+<br>
+<input @bind="name" placeholder="type name"/>
+<input @bind="message" placeholder="type message" />
+<br><br>
 <button class="btn btn-primary" @onclick="AddToDo">Add To Do</button>
 <button class="btn btn-primary" @onclick="InvokeJavaScript">Invoke JavaScript</button>
 @code {
@@ -41,14 +45,33 @@ else
     private string jsonData;
     private List<ToDoItem> todoList;
 
+    private string name;
+    private string message;
+
     private async void AddToDo()
     {
         // Now we want to use our Web API
         count++;
         HttpClient httpClient = new HttpClient();
+
+        ToDoItem todoItemPost = new ToDoItem
+            {
+                message = message,
+                name = name
+            };
+        string myContent = JsonSerializer.Serialize(todoItemPost);
+        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+        ByteArrayContent byteContent = new ByteArrayContent(buffer);
+        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        await httpClient.PostAsync("https://pcso-jem-api.azurewebsites.net/todoitems", byteContent);
+
         jsonData = await httpClient.GetStringAsync("https://pcso-jem-api.azurewebsites.net/todoitems");
-       
+
         todoList = JsonSerializer.Deserialize<List<ToDoItem>>(jsonData);
+        name = null;
+        message = null;
+
         StateHasChanged();
     }
 
@@ -64,7 +87,7 @@ else
         public string name { get; set; }
         public bool isComplete { get; set; }
         public string message { get; set; }
-        public DateTime created { get; set; }
+        public DateTime created { get; set; } = DateTime.Now;
     }
 }
 
