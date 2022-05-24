@@ -19,7 +19,7 @@ jobs:
 
       - name: dotnet publish
         run: |
-          cd./pcso-jem-frontend
+          cd .\pcso-jem-frontend
           dotnet build --configuration Release
           dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
