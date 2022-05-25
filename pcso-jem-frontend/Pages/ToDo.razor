@@ -34,16 +34,25 @@ else
         </tbody>
     </table>
 }
+<MudTextField @bind-Value="name" Label="Name" Variant="Variant.Outlined"></MudTextField>
+<MudTextField @bind-Value="message" Label="Message" Variant="Variant.Outlined"></MudTextField>
 
-  <input @bind="name" placeholder="type name"/>
-  <input @bind="message" placeholder="type message" />
   <br><br>
 
+  <MudButton Variant="Variant.Filled"
+             EEndIcon="@Icons.Material.Filled.Send"
+             OnClick="AddToDo"
+             Color="Color.Primary">Add</MudButton>
 
-<button class="btn btn-primary" @onclick="AddToDo">Add To Do</button>
-<button class="btn btn-primary" @onclick="InvokeJavaScript">Invoke JavaScript</button>
-<button class="btn btn-primary" @onclick="DeleteAll">Delete All</button>
-<MudButton Variant="Variant.Filled" Color="Color.Primary">Primary</MudButton>
+  <MudButton Variant="Variant.Filled"
+             EEndIcon="@Icons.Material.Filled.Send"
+             OnClick="InvokeJavaScript"
+             Color="Color.Primary">Update App</MudButton>
+
+  <MudButton Variant="Variant.Filled"
+             EEndIcon="@Icons.Material.Filled.Send"
+             OnClick="DeleteAll"
+             Color="Color.Primary">Delete List</MudButton>
 
 
 @code {
