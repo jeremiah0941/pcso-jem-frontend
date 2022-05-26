@@ -4,17 +4,17 @@
 
 
 
-    @if (messages != null)
-            {
-                    @foreach (var message in messages)
-            {
-<MudCard>
-<MudCardContent>
-<MudText Typo="Typo.body2">@message</MudText>
-</MudCardContent>
-</MudCard>
-<br />
-}
+@if (messages != null)
+{
+    @foreach (var message in messages)
+    {
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo="Typo.body2">@message</MudText>
+            </MudCardContent>
+        </MudCard>
+        <br />
+    }
 }
 
 
@@ -23,64 +23,64 @@
 <MudTextField @bind-Value="message" Label="Message" Variant="Variant.Outlined"></MudTextField>
 <br />
 <MudButton Variant="Variant.Filled"
-EndIcon="@Icons.Material.Filled.Send"
-OnClick="Send"
-Color="Color.Primary">Send</MudButton>
+           EndIcon="@Icons.Material.Filled.Send"
+           OnClick="Send"
+           Color="Color.Primary">Send</MudButton>
 
 
 
 
 @code {
-private HubConnection? hubConnection;
-private List<string> messages = new List<string>();
-private string? name;
-private string? message;
+    private HubConnection? hubConnection;
+    private List<string> messages = new List<string>();
+    private string? name;
+    private string? message;
 
 
 
-protected override async Task OnInitializedAsync()
-{
-hubConnection = new HubConnectionBuilder()
-.WithUrl("https://pcso-jem-api.azurewebsites.net/chat")
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl("https://pcso-jem-api.azurewebsites.net/chat")
 
-.Build();
-
-
-
-hubConnection.On<string, string>("Receive", (name, message) =>
-{
-var encodedMsg = $"{name} {message}";
-messages.Add(encodedMsg);
-StateHasChanged();
-});
+        .Build();
 
 
 
-await hubConnection.StartAsync();
-}
+        hubConnection.On<string, string>("Receive", (name, message) =>
+        {
+            var encodedMsg = $"{name} {message}";
+            messages.Add(encodedMsg);
+            StateHasChanged();
+        });
 
 
 
-private async Task Send()
-{
-if (hubConnection is not null)
-{
-await hubConnection.SendAsync("Broadcast", name, message);
-message = null;
-}
-}
+        await hubConnection.StartAsync();
+    }
 
 
 
-public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+    private async Task Send()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync("Broadcast", name, message);
+            message = null;
+        }
+    }
 
 
 
-public async ValueTask DisposeAsync()
-{
-if (hubConnection is not null)
-{
-await hubConnection.DisposeAsync();
-}
-}
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
+
+
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
 }
