@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32505.426
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pcso-jem-frontend", "pcso-jem-frontend.csproj", "{03415A33-F9C6-4EB4-BEBC-6CD0EA12BA52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pcso-jem-frontend", "pcso-jem-frontend.csproj", "{03415A33-F9C6-4EB4-BEBC-6CD0EA12BA52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
